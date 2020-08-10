@@ -48,7 +48,7 @@ AnalysisPluginController::AnalysisPluginController(
         LLVMIFDSSolver<const llvm::Value *, LLVMBasedICFG &> llvmifdstestsolver(
             *plugin, false, false);
         llvmifdstestsolver.solve();
-        FinalResultsJson += llvmifdstestsolver.getAsJson();
+//        FinalResultsJson += llvmifdstestsolver.getAsJson();
       }
     }
     if (!InterMonoProblemPluginFactory.empty()) {
