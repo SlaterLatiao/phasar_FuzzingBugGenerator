@@ -212,6 +212,7 @@ int main(int argc, const char **argv) {
     // --- LLVM mode ---
     LOG_IF_ENABLE(BOOST_LOG_SEV(lg, INFO)
                   << "Chosen operation mode: 'phasarLLVM'");
+    map<string, string> CustomConfigs;
     try {
       std::string ConfigFile;
       // Declare a group of options that will be allowed only on command line
@@ -248,7 +249,10 @@ int main(int argc, const char **argv) {
       #endif
       ("project-id", bpo::value<std::string>()->default_value("myphasarproject")->notifier(validateParamProjectID), "Project Id used for the database")
       ("graph-id", bpo::value<std::string>()->default_value("123456")->notifier(validateParamGraphID), "Graph Id used by the visualization framework")
-      ("pamm-out", bpo::value<std::string>()->notifier(validateParamOutput)->default_value("PAMM_data.json"), "Filename for PAMM's gathered data");
+      ("pamm-out", bpo::value<std::string>()->notifier(validateParamOutput)->default_value("PAMM_data.json"), "Filename for PAMM's gathered data")
+      ("SysRoot", bpo::value<std::string>(), "Absolute path to the root folder of target program")
+      ("OutputDir", bpo::value<std::string>(), "Absolute path to the folder where plugin results are stored")
+      ("APMPath", bpo::value<std::string>(), "Absolute path to output from AST pattern matcher");
       // clang-format on
       bpo::options_description CmdlineOptions;
       CmdlineOptions.add(PhasarMode).add(Generic).add(Config);
@@ -388,6 +392,16 @@ int main(int argc, const char **argv) {
         setLoggerFilterLevel(INFO);
       }
 
+      // print custom configs
+      vector CustomConfigNames = {"SysRoot", "OutputDir", "APMPath"};
+      for (auto ConfigName : CustomConfigNames) {
+        if (VariablesMap.count(ConfigName)) {
+          std::cout << ConfigName << ": " << VariablesMap[ConfigName].as<std::string>()
+                    << '\n';
+          CustomConfigs[ConfigName] = VariablesMap[ConfigName].as<std::string>();
+        }
+      }
+
       // Validation
       LOG_IF_ENABLE(BOOST_LOG_SEV(lg, INFO)
                     << "Check program options for logical errors.");
@@ -468,9 +482,10 @@ int main(int argc, const char **argv) {
         }(),
         ChosenDataFlowAnalyses, VariablesMap["wpa"].as<bool>(),
         VariablesMap["printedgerec"].as<bool>(),
-        VariablesMap["graph-id"].as<std::string>());
-    LOG_IF_ENABLE(BOOST_LOG_SEV(lg, INFO) << "Write results to file");
-    Controller.writeResults(VariablesMap["output"].as<std::string>());
+        VariablesMap["graph-id"].as<std::string>(),
+        CustomConfigs);
+//    LOG_IF_ENABLE(BOOST_LOG_SEV(lg, INFO) << "Write results to file");
+//    Controller.writeResults(VariablesMap["output"].as<std::string>());
   } else {
     // -- Clang mode ---
     LOG_IF_ENABLE(BOOST_LOG_SEV(lg, INFO)

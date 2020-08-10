@@ -32,7 +32,7 @@ using namespace psr;
 namespace psr {
 
 unique_ptr<IFDSTabulationProblemPlugin>
-makeIFDSSimpleTaintAnalysis(LLVMBasedICFG &I, vector<string> EntryPoints) {
+makeIFDSSimpleTaintAnalysis(LLVMBasedICFG &I, vector<string> EntryPoints, map<string, string> CustomConfigs) {
   return unique_ptr<IFDSTabulationProblemPlugin>(
       new IFDSSimpleTaintAnalysis(I, EntryPoints));
 }

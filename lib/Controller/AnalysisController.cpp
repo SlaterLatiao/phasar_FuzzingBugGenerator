@@ -66,7 +66,7 @@ std::ostream &operator<<(std::ostream &os, const ExportType &E) {
 
 AnalysisController::AnalysisController(
     ProjectIRDB &&IRDB, std::vector<DataFlowAnalysisType> Analyses,
-    bool WPA_MODE, bool PrintEdgeRecorder, std::string graph_id)
+    bool WPA_MODE, bool PrintEdgeRecorder, std::string graph_id, map<string, string> CustomConfigs)
     : FinalResultsJson() {
   PAMM_GET_INSTANCE;
   auto &lg = lg::get();
@@ -355,7 +355,7 @@ AnalysisController::AnalysisController(
             VariablesMap["analysis-plugin"].as<vector<string>>();
 #ifdef PHASAR_PLUGINS_ENABLED
         AnalysisPluginController PluginController(
-            AnalysisPlugins, ICFG, EntryPoints, FinalResultsJson);
+            AnalysisPlugins, ICFG, EntryPoints, FinalResultsJson, CustomConfigs);
 #endif
         break;
       }

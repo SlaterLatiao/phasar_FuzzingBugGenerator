@@ -27,7 +27,7 @@ namespace psr {
 
 AnalysisPluginController::AnalysisPluginController(
     vector<string> AnalysisPlygins, LLVMBasedICFG &ICFG,
-    vector<string> EntryPoints, json &Results)
+    vector<string> EntryPoints, json &Results, map<string, string> CustomConfigs)
     : FinalResultsJson(Results) {
   auto &lg = lg::get();
   for (const auto &AnalysisPlugin : AnalysisPlygins) {
@@ -43,7 +43,7 @@ AnalysisPluginController::AnalysisPluginController(
         LOG_IF_ENABLE(BOOST_LOG_SEV(lg, INFO)
                       << "Solving plugin: " << Problem.first);
         unique_ptr<IFDSTabulationProblemPlugin> plugin(
-            Problem.second(ICFG, EntryPoints));
+            Problem.second(ICFG, EntryPoints, CustomConfigs));
         cout << "DONE" << endl;
         LLVMIFDSSolver<const llvm::Value *, LLVMBasedICFG &> llvmifdstestsolver(
             *plugin, false, false);

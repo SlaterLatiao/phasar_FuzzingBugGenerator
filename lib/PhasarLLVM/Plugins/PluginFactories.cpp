@@ -15,7 +15,8 @@ namespace psr {
 
 // Maps for registering the plugins
 map<string, unique_ptr<IFDSTabulationProblemPlugin> (*)(LLVMBasedICFG &,
-                                                        vector<string>)>
+                                                        vector<string>,
+                                                        std::map<std::string, std::string>)>
     IFDSTabulationProblemPluginFactory;
 
 map<string,

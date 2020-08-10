@@ -29,7 +29,8 @@ namespace psr {
 
 unique_ptr<IFDSTabulationProblemPlugin>
 makeIFDSTabulationProblemTestPlugin(LLVMBasedICFG &I,
-                                    vector<string> EntryPoints) {
+                                    vector<string> EntryPoints,
+                                    map<string, string> CustomConfigs) {
   return unique_ptr<IFDSTabulationProblemPlugin>(
       new IFDSTabulationProblemTestPlugin(I, EntryPoints));
 }

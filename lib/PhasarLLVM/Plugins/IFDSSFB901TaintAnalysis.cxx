@@ -27,7 +27,7 @@ using namespace psr;
 namespace psr {
 
 unique_ptr<IFDSTabulationProblemPlugin>
-makeIFDSSFB901TaintAnalysis(LLVMBasedICFG &I, vector<string> EntryPoints) {
+makeIFDSSFB901TaintAnalysis(LLVMBasedICFG &I, vector<string> EntryPoints, map<string, string> CustomConfigs) {
   return unique_ptr<IFDSTabulationProblemPlugin>(
       new IFDSSFB901TaintAnalysis(I, EntryPoints));
 }

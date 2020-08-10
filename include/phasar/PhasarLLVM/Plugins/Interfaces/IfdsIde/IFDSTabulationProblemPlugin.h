@@ -42,15 +42,18 @@ class IFDSTabulationProblemPlugin
           const llvm::Function *, LLVMBasedICFG &> {
 protected:
   std::vector<std::string> EntryPoints;
+  std::map<std::string, std::string> CustomConfigs;
 
 public:
   IFDSTabulationProblemPlugin(LLVMBasedICFG &ICFG,
-                              std::vector<std::string> EntryPoints = {"main"})
+                              std::vector<std::string> EntryPoints = {"main"},
+                              std::map<std::string, std::string> CustomConfigs = std::map<std::string, std::string>())
       : DefaultIFDSTabulationProblem<const llvm::Instruction *,
                                      const llvm::Value *,
                                      const llvm::Function *, LLVMBasedICFG &>(
             ICFG),
-        EntryPoints(EntryPoints) {
+        EntryPoints(EntryPoints),
+        CustomConfigs(CustomConfigs) {
     DefaultIFDSTabulationProblem::zerovalue = createZeroValue();
   }
   ~IFDSTabulationProblemPlugin() = default;
@@ -80,7 +83,7 @@ public:
 
 extern std::map<std::string,
                 std::unique_ptr<IFDSTabulationProblemPlugin> (*)(
-                    LLVMBasedICFG &I, std::vector<std::string> EntryPoints)>
+                    LLVMBasedICFG &I, std::vector<std::string> EntryPoints, std::map<std::string, std::string> CustomConfigs)>
     IFDSTabulationProblemPluginFactory;
 
 } // namespace psr

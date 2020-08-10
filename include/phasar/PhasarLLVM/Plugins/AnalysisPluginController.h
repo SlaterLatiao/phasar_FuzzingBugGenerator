@@ -28,7 +28,8 @@ private:
 public:
   AnalysisPluginController(std::vector<std::string> AnalysisPlygins,
                            LLVMBasedICFG &ICFG,
-                           std::vector<std::string> EntryPoints, json &Results);
+                           std::vector<std::string> EntryPoints, json &Results,
+                           std::map<std::string, std::string> CustomConfigs = std::map<std::string, std::string>());
 };
 
 } // namespace psr

@@ -42,7 +42,8 @@ public:
   AnalysisController(ProjectIRDB &&IRDB,
                      std::vector<DataFlowAnalysisType> Analyses,
                      bool WPA_MODE = true, bool PrintEdgeRecorder = true,
-                     std::string graph_id = "");
+                     std::string graph_id = "",
+                     std::map<std::string, std::string> CustomConfigs = std::map<std::string, std::string>());
   ~AnalysisController() = default;
   void writeResults(std::string filename);
 };
